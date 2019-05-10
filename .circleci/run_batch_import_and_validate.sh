@@ -5,6 +5,7 @@ export FEAST_WAREHOUSE_DATASET=feast_build_${CIRCLE_SHA1:0:7}
 export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/cli/feast
 export FEAST_CORE_URI=localhost:50051
 export FEAST_SERVING_URI=localhost:50052
+export FEAST_BATCH_IMPORT_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/ingestion_1.csv
 
 # Install Google Cloud SDK
 GOOGLE_CLOUD_SDK_ARCHIVE_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-244.0.0-linux-x86_64.tar.gz
@@ -16,9 +17,11 @@ echo ${GCLOUD_SERVICE_KEY} > /etc/service_account.json
 export GOOGLE_APPLICATION_CREDENTIALS=/etc/service_account.json
 gcloud container clusters get-credentials feast-test-cluster --zone us-central1-a --project kf-feast
 
+# Prepare connections and import csv
 kubectl port-forward service/${FEAST_RELEASE_NAME}-core 50051:6565 &
 kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
-sleep 5
+gsutil cp integration-tests/feature_values/ingestion_1.csv ${FEAST_BATCH_IMPORT_GCS_URI}
+envsubst < integration-tests/import_specs/batch_from_gcs.yaml.template > integration-tests/import_specs/batch_from_gcs.yaml
 
 # Install Feast CLI
 gsutil cp ${FEAST_CLI_GCS_URI} /usr/local/bin/feast

@@ -1,11 +1,11 @@
 # Required environment variables as arguments to this template:
 # ============================================================
-# - BATCH_IMPORT_DATA_GCS_PATH (e.g. gs://bucket/file.csv)
+# - FEAST_BATCH_IMPORT_GCS_URI (e.g. gs://bucket/file.csv)
 
 type: file.csv
 
 sourceOptions:
-  path: ${BATCH_IMPORT_DATA_GCS_PATH}
+  path: ${FEAST_BATCH_IMPORT_GCS_URI}
 
 entities:
 - entity_1
