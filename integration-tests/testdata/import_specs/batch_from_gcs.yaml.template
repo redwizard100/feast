@@ -5,7 +5,7 @@
 type: file.csv
 
 sourceOptions:
-  path: "gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/ingestion_1.csv"
+  path: "${FEAST_BATCH_IMPORT_GCS_URI}"
 
 entities:
 - entity_1
