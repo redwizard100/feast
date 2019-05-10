@@ -32,7 +32,7 @@ jobs:
     - checkout
     - run: go test ./cli/feast/...
 
-  build_core:
+  build_and_push_core:
     docker:
     - image: google/cloud-sdk:245.0.0
     steps:
@@ -40,7 +40,7 @@ jobs:
     - setup_remote_docker
     - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1}
 
-  build_serving:
+  build_and_push_serving:
     docker:
     - image: google/cloud-sdk:245.0.0
     steps:
@@ -48,6 +48,27 @@ jobs:
     - setup_remote_docker
     - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-serving:${CIRCLE_SHA1}
 
+  build_and_push_cli:
+    docker:
+    - image: golang:1.12
+    steps:
+    - checkout
+    - run: .circleci/build_and_push_cli.sh gs://feast-templocation-kf-feast/build/${CIRCLE_SHA1}/cli/feast
+
+  install_feast:
+    docker:
+    - image: devth/helm:v2.13.1
+    steps:
+    - checkout 
+    - run: .circleci/install_feast.sh
+
+  uninstall_feast:
+    docker:
+    - image: devth/helm:v2.13.1
+    steps:
+    - checkout
+    - run: .circleci/uninstall_feast.sh
+    - when: always 
 
 workflows:
   version: 2.1
@@ -57,5 +78,16 @@ workflows:
     # - test_ingestion
     # - test_serving
     # - test_cli
-    - build_core
-    - build_serving
+    - build_and_push_core
+    - build_and_push_serving
+    - build_and_push_cli
+    
+    - install_feast:
+        requires:
+        - build_and_push_core
+        - build_and_push_serving
+        - build_and_push_cli
+
+    - uninstall_feast:
+        requires:
+        - install_feast

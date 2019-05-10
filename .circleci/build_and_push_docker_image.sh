@@ -6,8 +6,10 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
+DOCKER_IMAGE_TAG=${1}
+
 echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
 gcloud -q auth configure-docker
 
-docker build -t ${1}:${CIRCLE_SHA1} -f Dockerfiles/core/Dockerfile .
-docker push ${1}:${CIRCLE_SHA1}
+docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfiles/core/Dockerfile .
+docker push ${DOCKER_IMAGE_TAG}
