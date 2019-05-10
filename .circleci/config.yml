@@ -1,9 +1,38 @@
 version: 2
 jobs:
-  build:
+  test_core:
     docker:
-    - image: circleci/ruby:2.4.1
+    - image: maven:3.6-jdk-8-slim
     steps:
     - checkout
-    - run: echo "A first hello" 
-    - run: hostname
+    - run: mvn --projects core test
+
+  test_ingestion:
+    docker:
+    - image: maven:3.6-jdk-8-slim
+    steps:
+    - checkout
+    - run: mvn --projects ingestion test
+
+  test_serving:
+    docker:
+    - image: maven:3.6-jdk-8-slim
+    steps:
+    - checkout
+    - run: mvn --projects serving test
+
+  test_cli:
+    docker:
+    - image: golang:1.12
+    steps:
+    - checkout
+    - run: go test ./cli/feast/...
+
+workflows:
+  version: 2
+  unit_test:
+    jobs:
+    - test_core
+    - test_ingestion
+    - test_serving
+    - test_cli
