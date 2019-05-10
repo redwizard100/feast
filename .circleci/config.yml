@@ -33,6 +33,14 @@ jobs:
     - run: go test ./cli/feast/...
 
   build_core:
+    docker:
+    - image: google/cloud-sdk:245.0.0
+    steps:
+    - checkout
+    - echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+    - gcloud auth configure-docker
+    - docker build -t us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1} -f Dockerfiles/core/Dockerfile
+    - docker push us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1}
 
 
 workflows:
@@ -43,7 +51,4 @@ workflows:
     # - test_ingestion
     # - test_serving
     # - test_cli
-    - gcp-gcr/build_and_push_core:
-        image: feast-core
-        registry-url: us.gcr.io
-        tag: ${CIRCLE_SHA1}
+    - build_core
