@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export FEAST_WAREHOUSE_DATASET=feast_build_${CIRCLE_SHA1:0:8}
+export FEAST_WAREHOUSE_DATASET=feast_build_${CIRCLE_SHA1:0:7}
 export FEAST_CORE_URL=build-${CIRCLE_SHA1}.drone.feast.ai:80
 export FEAST_SERVING_URL=build-${CIRCLE_SHA1}.drone.feast.ai:80
 export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/cli/feast
@@ -9,11 +9,18 @@ export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3
 GOOGLE_CLOUD_SDK_ARCHIVE_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-244.0.0-linux-x86_64.tar.gz
 wget -qO- ${GOOGLE_CLOUD_SDK_ARCHIVE_URL} | tar xz -C /
 export PATH=$PATH:/google-cloud-sdk/bin
+echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
+echo ${GCLOUD_SERVICE_KEY} > /etc/service_account.json
+export GOOGLE_APPLICATION_CREDENTIALS=/etc/service_account.json
 
-# Install Feast SDK
+# Install Feast CLI
 gsutil cp ${FEAST_CLI_GCS_URI} /usr/local/bin/feast
 chmod +x /usr/local/bin/feast
 feast config set coreURI ${FEAST_CORE_URI}
+
+# Install Feast Python SDK
+pip install -qe sdk/python
+pip install -qr integration-tests/testutils/requirements.txt
 
 cd integration-tests
 
