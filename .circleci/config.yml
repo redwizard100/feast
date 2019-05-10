@@ -62,6 +62,14 @@ jobs:
     - checkout 
     - run: .circleci/install_feast.sh
 
+  integration_test:
+    docker:
+    - image: python:3.7
+    steps:
+    - checkout
+    - run: .circleci/run_batch_import_and_validate.sh
+    # - run: .circleci/run_streaming_import_and_validate.sh
+
   uninstall_feast:
     docker:
     - image: devth/helm:v2.13.1
@@ -69,7 +77,6 @@ jobs:
     - checkout
     - run: 
         command: .circleci/uninstall_feast.sh
-        when: always 
 
 workflows:
   version: 2.1
@@ -90,6 +97,10 @@ workflows:
     #     - build_and_push_serving
     #     - build_and_push_cli
 
-    - uninstall_feast:
+    - integration_test:
         requires:
         - install_feast
+
+    - uninstall_feast:
+        requires:
+        - integration_test
