@@ -34,7 +34,9 @@ pip install -qr integration-tests/testutils/requirements.txt
 
 cd integration-tests
 
+ls -lah testdata/import_specs
 cat testdata/import_specs/batch_from_gcs.yaml
+sleep 5
 
 feast apply entity testdata/entity_specs/entity_1.yaml
 feast apply feature testdata/feature_specs/entity_1.feature_*.yaml
