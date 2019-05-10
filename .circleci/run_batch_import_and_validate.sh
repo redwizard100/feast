@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export FEAST_WAREHOUSE_DATASET=feast_build_${CIRCLE_SHA1}
+export FEAST_WAREHOUSE_DATASET=feast_build_${CIRCLE_SHA1:0:8}
 export FEAST_CORE_URL=build-${CIRCLE_SHA1}.drone.feast.ai:80
 export FEAST_SERVING_URL=build-${CIRCLE_SHA1}.drone.feast.ai:80
 export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/cli/feast
