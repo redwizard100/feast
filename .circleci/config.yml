@@ -39,7 +39,7 @@ jobs:
     - checkout
     - run: echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
     - run: gcloud auth configure-docker
-    - run: docker build -t us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1} -f Dockerfiles/core/Dockerfile
+    - run: docker build -t us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1} -f Dockerfiles/core/Dockerfile .
     - run: docker push us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1}
 
 
