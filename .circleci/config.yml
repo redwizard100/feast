@@ -1,4 +1,8 @@
-version: 2
+version: 2.1
+
+orbs:
+  gcp-gcr: circleci/gcp-gcr@0.0.5
+
 jobs:
   test_core:
     docker:
@@ -28,11 +32,18 @@ jobs:
     - checkout
     - run: go test ./cli/feast/...
 
+  build_core:
+
+
 workflows:
-  version: 2
-  unit_test:
+  version: 2.1
+  feast_ci:
     jobs:
-    - test_core
-    - test_ingestion
-    - test_serving
-    - test_cli
+    # - test_core
+    # - test_ingestion
+    # - test_serving
+    # - test_cli
+    - gcp-gcr/build_and_push_core:
+        image: feast-core
+        registry-url: us.gcr.io
+        tag: ${CIRCLE_SHA1}
