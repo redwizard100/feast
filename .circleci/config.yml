@@ -79,15 +79,16 @@ workflows:
     # - test_ingestion
     # - test_serving
     # - test_cli
-    - build_and_push_core
-    - build_and_push_serving
-    - build_and_push_cli
+    # - build_and_push_core
+    # - build_and_push_serving
+    # - build_and_push_cli
 
-    - install_feast:
-        # requires:
-        # - build_and_push_core
-        # - build_and_push_serving
-        # - build_and_push_cli
+    - install_feast
+    # - install_feast:
+    #     requires:
+    #     - build_and_push_core
+    #     - build_and_push_serving
+    #     - build_and_push_cli
 
     - uninstall_feast:
         requires:
