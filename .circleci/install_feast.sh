@@ -11,6 +11,8 @@ FEAST_RELEASE_NAME=feast-${CIRCLE_BUILD_NUM}
 echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
 gcloud container clusters get-credentials feast-test-cluster --zone us-central1-a --project kf-feast
 
+unset GCLOUD_SERVICE_KEY
+env
 pwd 
 ls -lh
 echo ${CIRCLE_WORKING_DIRECTORY}
