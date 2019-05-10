@@ -37,6 +37,7 @@ jobs:
     - image: google/cloud-sdk:245.0.0
     steps:
     - checkout
+    - setup_remote_docker
     - run: echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
     - run: gcloud auth configure-docker
     - run: docker build -t us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1} -f Dockerfiles/core/Dockerfile .
