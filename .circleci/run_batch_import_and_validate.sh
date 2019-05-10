@@ -6,7 +6,6 @@ export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3
 export FEAST_CORE_URI=localhost:50051
 export FEAST_SERVING_URI=localhost:50052
 
-
 # Install Google Cloud SDK
 GOOGLE_CLOUD_SDK_ARCHIVE_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-244.0.0-linux-x86_64.tar.gz
 wget -qO- ${GOOGLE_CLOUD_SDK_ARCHIVE_URL} | tar xz -C /
@@ -15,6 +14,7 @@ gcloud -q components install kubectl
 echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
 echo ${GCLOUD_SERVICE_KEY} > /etc/service_account.json
 export GOOGLE_APPLICATION_CREDENTIALS=/etc/service_account.json
+gcloud container clusters get-credentials feast-test-cluster --zone us-central1-a --project kf-feast
 
 kubectl port-forward service/${FEAST_RELEASE_NAME}-core 50051:6565 &
 kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
