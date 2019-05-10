@@ -36,6 +36,10 @@ cd integration-tests
 
 feast apply entity testdata/entity_specs/entity_1.yaml
 feast apply feature testdata/feature_specs/entity_1.feature_*.yaml
+
+tree testdata
+cat import_specs/batch_from_gcs.yaml
+
 feast jobs run testdata/import_specs/batch_from_gcs.yaml --wait
 
 python -m testutils.validate_feature_values \
