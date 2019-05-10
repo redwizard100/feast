@@ -21,7 +21,7 @@ gcloud container clusters get-credentials feast-test-cluster --zone us-central1-
 kubectl port-forward service/${FEAST_RELEASE_NAME}-core 50051:6565 &
 kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
 gsutil cp integration-tests/testdata/feature_values/ingestion_1.csv ${FEAST_BATCH_IMPORT_GCS_URI}
-envsubst < integration-tests/testdata/import_specs/batch_from_gcs.yaml.template > integration-tests/testdata/import_specs/batch_from_gcs.yaml
+# envsubst < integration-tests/testdata/import_specs/batch_from_gcs.yaml.template > integration-tests/testdata/import_specs/batch_from_gcs.yaml
 
 # Install Feast CLI
 gsutil cp ${FEAST_CLI_GCS_URI} /usr/local/bin/feast

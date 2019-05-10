@@ -5,7 +5,7 @@
 type: file.csv
 
 sourceOptions:
-  path: ${FEAST_BATCH_IMPORT_GCS_URI}
+  path: "${FEAST_BATCH_IMPORT_GCS_URI}"
 
 entities:
 - entity_1
