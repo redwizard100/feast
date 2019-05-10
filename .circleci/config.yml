@@ -67,8 +67,9 @@ jobs:
     - image: devth/helm:v2.13.1
     steps:
     - checkout
-    - run: .circleci/uninstall_feast.sh
-    - when: always 
+    - run: 
+        command: .circleci/uninstall_feast.sh
+        when: always 
 
 workflows:
   version: 2.1
@@ -81,7 +82,7 @@ workflows:
     - build_and_push_core
     - build_and_push_serving
     - build_and_push_cli
-    
+
     - install_feast:
         requires:
         - build_and_push_core
