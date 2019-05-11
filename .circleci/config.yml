@@ -72,9 +72,16 @@ workflows:
     - test_ingestion
     - test_serving
     - test_cli
-    - build_and_push_core
-    - build_and_push_serving
-    - build_and_push_cli
+    - build_and_push_core:
+        requires:
+        - test_core
+        - test_ingestion
+    - build_and_push_serving:
+        requires:
+        - test_serving
+    - build_and_push_cli:
+        requires:
+        - test_cli
     - integration_test:
         requires:
         - build_and_push_core
