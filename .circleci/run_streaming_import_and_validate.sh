@@ -26,13 +26,17 @@ gcloud container clusters get-credentials feast-test-cluster --zone us-central1-
 kubectl port-forward service/${FEAST_RELEASE_NAME}-core 50051:6565 &
 kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
 kubectl port-forward service/${KAFKA_RELEASE_NAME}-0-external 31090:19092 &
-envsubst < integration-tests/testdata/import_specs/stream_from_kafka.yaml.template > integration-tests/testdata/import_specs/stream_from_kafka.yaml.yaml
+envsubst < integration-tests/testdata/import_specs/stream_from_kafka.yaml.template > integration-tests/testdata/import_specs/stream_from_kafka.yaml
 export KAFKA_BROKERS=localhost:31090
 
 # Install Feast CLI
 gsutil cp ${FEAST_CLI_GCS_URI} /usr/local/bin/feast
 chmod +x /usr/local/bin/feast
 feast config set coreURI ${FEAST_CORE_URI}
+
+# Install Feast Python SDK
+pip install -qe sdk/python
+pip install -qr integration-tests/testutils/requirements.txt
 
 cd integration-tests
 feast apply entity testdata/entity_specs/entity_2.yaml
