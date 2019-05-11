@@ -161,7 +161,7 @@ func TestPrintStorageWithOptions(t *testing.T) {
 	}
 	out := PrintStorageDetail(storageDetail)
 
-	// Since map iteration order in Golang is radomized and "Options" is stored in a map,
+	// Since map iteration order in Golang is randomized and "Options" is stored in a map,
 	// this test just check that the output "contains" the key and value
 	// rather than checking the exact match
 

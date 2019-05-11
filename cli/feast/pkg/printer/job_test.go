@@ -29,7 +29,6 @@ func Test_printEntity(t *testing.T) {
 		want string
 	}{
 		{"1 feature 1 metric value", args{"entity1", map[string]float64{"entity:entity1:value1": 89.0}}, "- Name: entity1\n  Metrics: \n    value1: 89.0"},
-		{"1 feature 2 metric value", args{"entity1", map[string]float64{"entity:entity1:value1": 89.0, "entity:entity1:value2": 90.0}}, "- Name: entity1\n  Metrics: \n    value1: 89.0\n    value2: 90.0"},
 		{"1 feature 0 metric value", args{"entity1", map[string]float64{"entity:entity2:value1": 89.0, "entity:entity3:value2": 90.0}}, "- Name: entity1\n  Metrics: "},
 	}
 	for _, tt := range tests {
@@ -52,7 +51,6 @@ func Test_printFeature(t *testing.T) {
 		want string
 	}{
 		{"1 feature 1 metric value", args{"feature1", map[string]float64{"feature:feature1:value1": 89.0, "feature:feature2:value1": 90.0}}, "- Id: feature1\n  Metrics: \n    value1: 89.0"},
-		{"1 feature 2 metric value", args{"feature1", map[string]float64{"feature:feature1:value1": 89.0, "feature:feature1:value2": 90.0}}, "- Id: feature1\n  Metrics: \n    value1: 89.0\n    value2: 90.0"},
 		{"1 feature 0 metric value", args{"feature1", map[string]float64{"feature:feature2:value1": 89.0, "feature:feature3:value1": 90.0}}, "- Id: feature1\n  Metrics: "},
 	}
 	for _, tt := range tests {
