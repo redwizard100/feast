@@ -13,6 +13,7 @@ export FEAST_BATCH_IMPORT_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5
 kubectl port-forward service/${FEAST_RELEASE_NAME}-core 50051:6565 &
 kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
 
+sleep 10
 cd integration-tests/testdata
 
 # Prepare import spec

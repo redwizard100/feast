@@ -20,6 +20,7 @@ kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
 export KAFKA_RELEASE_NAME=kafka
 kubectl port-forward service/${KAFKA_RELEASE_NAME}-0-external 31090:19092 &
 
+sleep 20
 cd integration-tests/testdata
 
 # Prepare import spec
