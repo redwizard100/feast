@@ -35,7 +35,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker
-    - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1}
+    - run: .circleci/build_and_push_docker_image.sh core us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1}
 
   build_and_push_serving:
     docker:
@@ -43,7 +43,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker
-    - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-serving:${CIRCLE_SHA1}
+    - run: .circleci/build_and_push_docker_image.sh serving us.gcr.io/kf-feast/feast-serving:${CIRCLE_SHA1}
 
   build_and_push_cli:
     docker:
