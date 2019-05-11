@@ -33,3 +33,7 @@ feast config set coreURI ${FEAST_CORE_URI}
 # Install Feast Python SDK
 pip install -qe sdk/python
 pip install -qr integration-tests/testutils/requirements.txt
+
+# Make environment variables available in next Circle step
+echo 'export PATH="/google-cloud-sdk/bin:$PATH"' >> ${BASH_ENV}
+echo 'export GOOGLE_APPLICATION_CREDENTIALS="/etc/service_account.json"' >> ${BASH_ENV}

@@ -57,12 +57,12 @@ jobs:
     - image: python:3.7
     steps:
     - checkout 
-    - run: . .circleci/install_integration_test_tools.sh
-    - run: . .circleci/install_feast.sh
+    - run: .circleci/install_integration_test_tools.sh
+    - run: .circleci/install_feast.sh
     - run: .circleci/run_batch_import_and_validate.sh
     - run: .circleci/run_streaming_import_and_validate.sh
     - run: 
-        command: . .circleci/uninstall_feast.sh
+        command: .circleci/uninstall_feast.sh
         when: always
 
   # install_feast:
