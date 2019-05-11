@@ -65,38 +65,18 @@ jobs:
         command: .circleci/uninstall_feast.sh
         when: always
 
-  # install_feast:
-  #   docker:
-  #   - image: devth/helm:v2.13.1
-  #   steps:
-  #   - checkout 
-  #   - run: .circleci/install_feast.sh
-
-  # integration_test:
-  #   docker:
-  #   - image: python:3.7
-  #   steps:
-  #   - checkout
-  #   # - run: .circleci/run_batch_import_and_validate.sh
-  #   - run: .circleci/run_streaming_import_and_validate.sh
-
-  # uninstall_feast:
-  #   docker:
-  #   - image: devth/helm:v2.13.1
-  #   steps:
-  #   - checkout
-  #   - run: 
-  #       command: .circleci/uninstall_feast.sh
-
 workflows:
   feast_ci:
     jobs:
-    # - test_core
-    # - test_ingestion
-    # - test_serving
-    # - test_cli
-    # - build_and_push_core
-    # - build_and_push_serving
-    # - build_and_push_cli
-
-    - integration_test
+    - test_core
+    - test_ingestion
+    - test_serving
+    - test_cli
+    - build_and_push_core
+    - build_and_push_serving
+    - build_and_push_cli
+    - integration_test:
+        requires:
+        - build_and_push_core
+        - build_and_push_serving
+        - build_and_push_cli

@@ -4,7 +4,6 @@ set -e
 
 export FEAST_RELEASE_NAME=feast-${CIRCLE_SHA1:0:7}
 export FEAST_WAREHOUSE_DATASET=feast_build_${CIRCLE_SHA1:0:7}
-export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/cli/feast
 export FEAST_CORE_URI=localhost:50051
 export FEAST_SERVING_URI=localhost:50052
 export FEAST_BATCH_IMPORT_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/ingestion_1.csv

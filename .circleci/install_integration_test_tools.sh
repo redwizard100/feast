@@ -2,7 +2,7 @@
 
 set -e
 
-export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/cli/feast
+export FEAST_CLI_GCS_URI=gs://feast-templocation-kf-feast/build/${CIRCLE_SHA1}/cli/feast
 export FEAST_CORE_URI=localhost:50051
 export GOOGLE_CLOUD_SDK_ARCHIVE_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-244.0.0-linux-x86_64.tar.gz
 
