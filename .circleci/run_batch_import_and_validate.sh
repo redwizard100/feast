@@ -9,6 +9,10 @@ export FEAST_CORE_URI=localhost:50051
 export FEAST_SERVING_URI=localhost:50052
 export FEAST_BATCH_IMPORT_GCS_URI=gs://feast-templocation-kf-feast/build/1117ce5af6e75fe3cb3c75240474d312a07856d7/ingestion_1.csv
 
+# Setup port forwarding to access Feast core and serving service in Kube
+kubectl port-forward service/${FEAST_RELEASE_NAME}-core 50051:6565 &
+kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
+
 cd integration-tests/testdata
 
 # Prepare import spec

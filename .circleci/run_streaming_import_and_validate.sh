@@ -12,6 +12,14 @@ export KAFKA_BROKERS=kafka-headless.default.svc.cluster.local:9092
 export KAFKA_TOPICS=feast-${CIRCLE_SHA1:0:7}
 export KAFKA_RELEASE_NAME=kafka
 
+# Setup port forwarding to access Feast core and serving service in Kube
+kubectl port-forward service/${FEAST_RELEASE_NAME}-core 50051:6565 &
+kubectl port-forward service/${FEAST_RELEASE_NAME}-serving 50052:6565 &
+
+# Setup port forwarding to Kafka server for testing streaming import
+export KAFKA_RELEASE_NAME=kafka
+kubectl port-forward service/${KAFKA_RELEASE_NAME}-0-external 31090:19092 &
+
 cd integration-tests/testdata
 
 # Prepare import spec
