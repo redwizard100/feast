@@ -28,6 +28,11 @@ kubectl port-forward service/${KAFKA_RELEASE_NAME}-0-external 31090:19092 &
 envsubst < integration-tests/testdata/import_specs/stream_from_kafka.yaml.template > integration-tests/testdata/import_specs/stream_from_kafka.yaml.yaml
 export KAFKA_BROKERS=localhost:31090
 
+# Install Feast CLI
+gsutil cp ${FEAST_CLI_GCS_URI} /usr/local/bin/feast
+chmod +x /usr/local/bin/feast
+feast config set coreURI ${FEAST_CORE_URI}
+
 cd integration-tests
 feast apply entity testdata/entity_specs/entity_2.yaml
 feast apply feature testdata/feature_specs/entity_2.feature_*.yaml
