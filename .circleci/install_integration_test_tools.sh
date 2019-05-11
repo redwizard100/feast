@@ -19,7 +19,6 @@ gcloud config set project kf-feast
 echo ${GCLOUD_SERVICE_KEY} > /etc/service_account.json
 gcloud -q auth activate-service-account --key-file=/etc/service_account.json
 export GOOGLE_APPLICATION_CREDENTIALS=/etc/service_account.json
-gcloud -q auth configure-docker
 gcloud -q container clusters get-credentials feast-test-cluster --zone us-central1-a --project kf-feast
 
 # Install Helm
