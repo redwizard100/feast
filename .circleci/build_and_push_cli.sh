@@ -9,10 +9,9 @@ fi
 GCS_URI=${1}
 
 # Install Google Cloud SDK
-GOOGLE_CLOUD_SDK_ARCHIVE_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-244.0.0-linux-x86_64.tar.gz
-wget -qO- ${GOOGLE_CLOUD_SDK_ARCHIVE_URL} | tar xz -C /
-export PATH=$PATH:/google-cloud-sdk/bin
-echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. ${SCRIPT_DIR}/install_google_cloud_sdk.sh
 
+# Build CLI and upload to GCS
 go build -o ./cli/build/feast ./cli/feast
 gsutil cp ./cli/build/feast ${GCS_URI}

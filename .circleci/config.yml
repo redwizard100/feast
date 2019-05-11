@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  gcp-gcr: circleci/gcp-gcr@0.0.5
-
 jobs:
   test_core:
     docker:
@@ -32,54 +29,66 @@ jobs:
     - checkout
     - run: go test ./cli/feast/...
 
-  # build_and_push_core:
-  #   docker:
-  #   - image: google/cloud-sdk:245.0.0
-  #   steps:
-  #   - checkout
-  #   - setup_remote_docker
-  #   - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1}
-
-  # build_and_push_serving:
-  #   docker:
-  #   - image: google/cloud-sdk:245.0.0
-  #   steps:
-  #   - checkout
-  #   - setup_remote_docker
-  #   - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-serving:${CIRCLE_SHA1}
-
-  # build_and_push_cli:
-  #   docker:
-  #   - image: golang:1.12
-  #   steps:
-  #   - checkout
-  #   - run: .circleci/build_and_push_cli.sh gs://feast-templocation-kf-feast/build/${CIRCLE_SHA1}/cli/feast
-
-  install_feast:
+  build_and_push_core:
     docker:
-    - image: devth/helm:v2.13.1
+    - image: google/cloud-sdk:245.0.0
     steps:
-    - checkout 
-    - run: .circleci/install_feast.sh
+    - checkout
+    - setup_remote_docker
+    - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-core:${CIRCLE_SHA1}
+
+  build_and_push_serving:
+    docker:
+    - image: google/cloud-sdk:245.0.0
+    steps:
+    - checkout
+    - setup_remote_docker
+    - run: .circleci/build_and_push_docker_image.sh us.gcr.io/kf-feast/feast-serving:${CIRCLE_SHA1}
+
+  build_and_push_cli:
+    docker:
+    - image: golang:1.12
+    steps:
+    - checkout
+    - run: .circleci/build_and_push_cli.sh gs://feast-templocation-kf-feast/build/${CIRCLE_SHA1}/cli/feast
 
   integration_test:
     docker:
     - image: python:3.7
     steps:
-    - checkout
-    # - run: .circleci/run_batch_import_and_validate.sh
+    - checkout 
+    - run: . .circleci/install_integration_test_tools.sh
+    - run: . .circleci/install_feast.sh
+    - run: .circleci/run_batch_import_and_validate.sh
     - run: .circleci/run_streaming_import_and_validate.sh
-
-  uninstall_feast:
-    docker:
-    - image: devth/helm:v2.13.1
-    steps:
-    - checkout
     - run: 
-        command: .circleci/uninstall_feast.sh
+        command: . .circleci/uninstall_feast.sh
+        when: always
+
+  # install_feast:
+  #   docker:
+  #   - image: devth/helm:v2.13.1
+  #   steps:
+  #   - checkout 
+  #   - run: .circleci/install_feast.sh
+
+  # integration_test:
+  #   docker:
+  #   - image: python:3.7
+  #   steps:
+  #   - checkout
+  #   # - run: .circleci/run_batch_import_and_validate.sh
+  #   - run: .circleci/run_streaming_import_and_validate.sh
+
+  # uninstall_feast:
+  #   docker:
+  #   - image: devth/helm:v2.13.1
+  #   steps:
+  #   - checkout
+  #   - run: 
+  #       command: .circleci/uninstall_feast.sh
 
 workflows:
-  version: 2.1
   feast_ci:
     jobs:
     # - test_core
@@ -90,17 +99,4 @@ workflows:
     # - build_and_push_serving
     # - build_and_push_cli
 
-    - install_feast
-    # - install_feast:
-    #     requires:
-    #     - build_and_push_core
-    #     - build_and_push_serving
-    #     - build_and_push_cli
-
-    - integration_test:
-        requires:
-        - install_feast
-
-    - uninstall_feast:
-        requires:
-        - integration_test
+    - integration_test
